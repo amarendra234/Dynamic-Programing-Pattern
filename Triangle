@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int min_val(vector<vector<int>>&triangle,int n,int index,vector<vector<int>>&dp){
+        if(n==0){
+            return triangle[n][0];
+        }
+        int maxi=1e9;
+        if(index<0 or index>=triangle[n].size()){
+            return 1e9;
+        }
+         if(dp[n][index]!=-1){
+            return dp[n][index];
+         }
+        return dp[n][index]=min(min_val(triangle,n-1,index,dp),min_val(triangle,n-1,index-1,dp))+triangle[n][index];
+    }
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int index=triangle[triangle.size()-1].size();
+        int min_sum=1e9;
+       
+        for(int i=0;i<index;i++){
+             vector<vector<int>>dp(triangle.size(),vector<int>(index+1,-1));
+            min_sum=min(min_sum,min_val(triangle,triangle.size()-1,i,dp));
+        }
+        return min_sum;
+    }
+};
