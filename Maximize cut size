@@ -1,0 +1,64 @@
+// target sum problem (unbounded knapsack)
+
+
+
+
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+
+
+// } Driver Code Ends
+class Solution
+{
+    public:
+    //Function to find the maximum number of cuts.
+    int maximize_cut(int n,int arr[],int len,vector<vector<int>>&dp){
+        if(n==0){
+            return 0;
+        }
+        if(n<0 or len<=0){
+            return -1e9;
+        }
+        if(dp[n][len]!=-1){
+            return dp[n][len];
+        }
+        return dp[n][len]=max(maximize_cut(n-arr[len-1],arr,len,dp)+1,maximize_cut(n,arr,len-1,dp));
+    }
+    int maximizeTheCuts(int n, int x, int y, int z)
+    {
+        int arr[3]={x,y,z};
+        vector<vector<int>>dp(n+1,vector<int>(4,-1));
+        int ans=maximize_cut(n,arr,3,dp);
+        if(ans<0){
+            return 0;
+        }
+        return ans;
+    }
+};
+
+//{ Driver Code Starts.
+int main() {
+    
+    //taking testcases
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        //taking length of line segment
+        int n;
+        cin >> n;
+        
+        //taking types of segments
+        int x,y,z;
+        cin>>x>>y>>z;
+        Solution obj;
+        //calling function maximizeTheCuts()
+        cout<<obj.maximizeTheCuts(n,x,y,z)<<endl;
+
+    }
+
+	return 0;
+}
+// } Driver Code Ends
