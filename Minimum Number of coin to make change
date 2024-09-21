@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int min_coin(vector<int>&coins,int amount,int n,vector<vector<int>>&dp){
+        if(amount==0){
+            return 0;
+        }
+        if(amount<0 || n<=0){
+            return 1e9;
+        }
+        if(dp[n][amount]!=-1){
+            return dp[n][amount];
+        }
+        int include=min_coin(coins,amount-coins[n-1],n,dp)+1;
+        int not_include=min_coin(coins,amount,n-1,dp);
+        return dp[n][amount]=min(include,not_include);
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        // unbounded knapsack + target sum problem
+        vector<vector<int>>dp(coins.size()+1,vector<int>(amount+1,-1));
+        int ans=min_coin(coins,amount,coins.size(),dp);
+        if(ans==1e9){
+            return -1;
+        }
+        return ans;
+    }
+};
