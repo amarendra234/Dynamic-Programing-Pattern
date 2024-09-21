@@ -22,5 +22,71 @@ public:
             return -1;
         }
         return ans;
+
+
+
+
+
     }
 };
+
+
+Top down approach
+
+
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+class Solution {
+
+  public:
+    int minCoins(vector<int> &coins, int sum) {
+        int len=coins.size();
+        int dp[len+1][sum+1];
+        for(int i=0;i<=sum;i++){
+            dp[0][i]=1e9;
+        }
+        for(int i=0;i<=len;i++){
+            dp[i][0]=0;
+        }
+        for(int i=1;i<=len;i++){
+            for(int j=1;j<=sum;j++){
+                if(coins[i-1]>j){ // not include case
+                    dp[i][j]=dp[i-1][j];
+                }else{
+                    dp[i][j]=min(dp[i-1][j],dp[i][j-coins[i-1]]+1);
+                }
+            }
+        }
+        if(dp[len][sum]==1e9){
+            return -1;
+        }
+        return dp[len][sum];
+    }
+};
+
+//{ Driver Code Starts.
+int main() {
+
+    int t;
+    cin >> t;
+    while (t--) {
+        int v, m;
+        cin >> v >> m;
+
+        vector<int> coins(m);
+        for (int i = 0; i < m; i++)
+            cin >> coins[i];
+
+        Solution ob;
+        cout << ob.minCoins(coins, v) << "\n";
+    }
+    return 0;
+}
+
+// } Driver Code Ends
+
+
