@@ -1,0 +1,33 @@
+class Solution {
+public:
+    long long int brainpower(vector<vector<int>>&ans,int n,vector<long long>&dp){
+        if(n>=ans.size()){
+            return 0;
+        }
+        if(dp[n]!=-1){
+            return dp[n];
+        }
+        // if solve current problem;
+        long long int ans1=ans[n][0]+brainpower(ans,n+ans[n][1]+1,dp);
+        // if not solve current problem
+        long long int ans2=brainpower(ans,n+1,dp);
+        return dp[n]=max(ans1,ans2);
+    }
+    long long mostPoints(vector<vector<int>>& questions) {
+        vector<long long>dp(questions.size(),-1);
+         for(int i=questions.size()-1;i>=0;i--){
+            //let's take it
+              long long int ans=questions[i][0];
+              if(questions[i][1]+1+i<questions.size()){
+                 ans+=dp[1+i+questions[i][1]];
+              }
+              // let's not take;
+              long long int ans1=INT_MIN;
+              if(i+1<questions.size()){
+                  ans1=dp[i+1];
+              }
+              dp[i]=max(ans,ans1);
+         }
+        return dp[0];
+    }
+};
