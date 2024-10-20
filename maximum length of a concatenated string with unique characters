@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int maxi;
+    bool isvalid(string s,string temp){
+        int a[26];
+        for(int i=0;i<26;i++){
+            a[i]=0;
+        }
+        for(int i=0;i<s.length();i++){
+            a[s[i]-'a']++;
+        }
+        for(int i=0;i<temp.length();i++){
+            a[temp[i]-'a']++;
+        }
+        for(int i=0;i<26;i++){
+            if(a[i]>1){
+                return false;
+            }
+        }
+        return true;
+    }
+    void max_len(vector<string>&arr,int index,string temp){
+        if(index==arr.size()){
+            int len=temp.length();
+            maxi=max(maxi,len);
+            return;
+        }
+        // check if it's valid then two cases either include or not
+        if(isvalid(arr[index],temp)){
+            // include it
+            max_len(arr,index+1,temp+arr[index]);
+            // exclude it
+            max_len(arr,index+1,temp);
+
+        }else{
+            max_len(arr,index+1,temp);
+        }
+
+    }
+    int maxLength(vector<string>& arr) {
+        maxi=0;
+         max_len(arr,0,"");
+        return maxi;
+    }
+};
