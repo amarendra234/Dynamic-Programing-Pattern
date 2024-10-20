@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int min_square_path(int n,vector<int>&dp){
+        if(n<=0){
+            return 0;
+        }
+        if(dp[n]!=-1){
+            return dp[n];
+        }
+        int min_ans=INT_MAX;
+        for(int i=1;i*i<=n;i++){
+            int res=1+min_square_path(n-i*i,dp);
+            min_ans=min(min_ans,res);
+        }
+        return dp[n]=min_ans;
+    }
+    int numSquares(int n) {
+        vector<int>dp(n+1,-1);
+        return min_square_path(n,dp);
+    }
+};
