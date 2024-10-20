@@ -43,3 +43,53 @@ public:
         return maxi;
     }
 };
+
+
+
+//  second way of writing same code
+
+
+class Solution {
+public:
+    int maxi;
+    bool isvalid(string s,string temp){
+        int a[26];
+        for(int i=0;i<26;i++){
+            a[i]=0;
+        }
+        for(int i=0;i<s.length();i++){
+            a[s[i]-'a']++;
+        }
+        for(int i=0;i<temp.length();i++){
+            a[temp[i]-'a']++;
+        }
+        for(int i=0;i<26;i++){
+            if(a[i]>1){
+                return false;
+            }
+        }
+        return true;
+    }
+    int max_len(vector<string>&arr,int index,string temp){
+        if(index==arr.size()){
+            return temp.length();
+        }
+        // check if it's valid then two cases either include or not
+        if(isvalid(arr[index],temp)){
+            // include it
+           int exclude= max_len(arr,index+1,temp+arr[index]);
+            // exclude it
+           int include= max_len(arr,index+1,temp);
+           return max(exclude,include);
+
+        }else{
+            return max_len(arr,index+1,temp);
+        }
+
+    }
+    int maxLength(vector<string>& arr) {
+        //maxi=0;
+         
+        return max_len(arr,0,"");
+    }
+};
