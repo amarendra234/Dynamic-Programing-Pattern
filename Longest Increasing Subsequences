@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int LIS(vector<int>&nums,int index,int pre,vector<vector<int>>&dp){
+        if(index>=nums.size()){
+            return 0;
+        }
+        if(pre!=-1 and dp[index][pre]!=-1){
+            return dp[index][pre];
+        }
+        //skip 
+        int skip=LIS(nums,index+1,pre,dp);
+        // take if current greater than previous
+        int take=INT_MIN;
+        if(pre==-1 or nums[index]>nums[pre]){
+            take=1+LIS(nums,index+1,index,dp);
+        }
+          if (pre != -1) {
+            dp[index][pre] = max(take, skip);
+        }
+        return max(take,skip);
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        //vector<vector<int>>dp(n,vector<int>(n+1,-1));
+        int dp[n];
+        for(int i=0;i<n;i++){
+            dp[i]=1;
+        }
+        for(int i=1;i<n;i++){
+            for(int j=0;j<i;j++){
+                if(nums[i]>nums[j]){
+                    dp[i]=max(dp[i],dp[j]+1);
+                }
+            }
+        }
+        int maxi=0;
+        for(int i=0;i<n;i++){
+            maxi=max(maxi,dp[i]);
+        }
+        return maxi;
+    }
+};
