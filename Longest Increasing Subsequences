@@ -22,21 +22,32 @@ public:
     int lengthOfLIS(vector<int>& nums) {
         int n=nums.size();
         //vector<vector<int>>dp(n,vector<int>(n+1,-1));
-        int dp[n];
-        for(int i=0;i<n;i++){
-            dp[i]=1;
-        }
-        for(int i=1;i<n;i++){
-            for(int j=0;j<i;j++){
-                if(nums[i]>nums[j]){
-                    dp[i]=max(dp[i],dp[j]+1);
-                }
+        // int dp[n];
+        // for(int i=0;i<n;i++){
+        //     dp[i]=1;
+        // }
+        // for(int i=1;i<n;i++){
+        //     for(int j=0;j<i;j++){
+        //         if(nums[i]>nums[j]){
+        //             dp[i]=max(dp[i],dp[j]+1);
+        //         }
+        //     }
+        // }
+        // int maxi=0;
+        // for(int i=0;i<n;i++){
+        //     maxi=max(maxi,dp[i]);
+        // }
+        // n logn approach via patient sorting
+        vector<int>sorted;
+        for(int i=0;i<nums.size();i++){
+            auto it=lower_bound(sorted.begin(),sorted.end(),nums[i]);
+            if(it==sorted.end()){
+                sorted.push_back(nums[i]);
+            }else{
+                int index=it-sorted.begin();
+                sorted[index]=nums[i];
             }
         }
-        int maxi=0;
-        for(int i=0;i<n;i++){
-            maxi=max(maxi,dp[i]);
-        }
-        return maxi;
+        return sorted.size();
     }
 };
