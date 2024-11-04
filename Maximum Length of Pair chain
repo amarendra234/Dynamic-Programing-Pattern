@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int longest_chain(vector<vector<int>>& pairs,int index,int pre,vector<vector<int>>&dp){
+        if(index>=pairs.size()){
+            return 0;
+        }
+        if(pre!=-1 and dp[index][pre]!=-1){
+            return dp[index][pre];
+        }
+        // skip
+        int skip=longest_chain(pairs,index+1,pre,dp);
+        //not include
+        int take=0;
+        if(pre==-1 or pairs[index][0]>pairs[pre][1]){
+             take=1+longest_chain(pairs,index+1,index,dp);
+        }
+        if(pre!=-1){
+            dp[index][pre]=max(skip,take);
+        }
+        return max(skip,take);
+    }
+    int findLongestChain(vector<vector<int>>& pairs) {
+        sort(pairs.begin(), pairs.end(), [](const vector<int>& a, const vector<int>& b) {
+        return a[0] < b[0];
+    });
+   // vector<vector<int>>dp(pairs.size()+1,vector<int>(pairs.size()+1,-1));
+        int n=pairs.size();
+        int dp[n];
+        for(int i=0;i<n;i++){
+            dp[i]=1;
+        }
+        for(int i=1;i<n;i++){
+            for(int j=0;j<i;j++){
+                if(pairs[i][0]>pairs[j][1]){
+                    dp[i]=max(dp[i],dp[j]+1);
+                }
+            }
+        }
+        int maxi=0;
+        for(int i=0;i<n;i++){
+            maxi=max(maxi,dp[i]);
+        }
+        return maxi;
+    }
+};
