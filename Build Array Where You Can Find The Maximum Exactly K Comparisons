@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int no_of_array(int index,int m,int len,int max_so_for,int k,int n,vector<vector<vector<int>>>&dp){
+        if(index==n+1){
+            if(len==k){
+                return 1;
+            }
+            return 0;
+        }
+        if(len>k){
+            return 0;
+        }
+        if(max_so_for!=-1 and dp[index][len][max_so_for]!=-1){
+            return dp[index][len][max_so_for];
+        }
+        // total ways;
+        int ans=0;
+        for(int i=1;i<=m;i++){
+            if(i>max_so_for){
+                ans=(ans%1000000007+no_of_array(index+1,m,len+1,i,k,n,dp)%1000000007)%1000000007;
+            }else{
+                ans=(ans%1000000007+no_of_array(index+1,m,len,max_so_for,k,n,dp)%1000000007)%1000000007;
+            }
+        }
+        ans=ans%10000000007;
+        if(max_so_for!=-1){
+               dp[index][len][max_so_for]=ans;
+        }
+        return ans;
+    }
+    int numOfArrays(int n, int m, int k) {
+       vector<vector<vector<int>>>dp(n+1, vector<vector<int>>(k+1,vector<int>(m+1, -1)));
+        return no_of_array(1,m,0,-1,k,n,dp);
+    }
+};
