@@ -1,0 +1,40 @@
+class Solution {
+public:
+    bool static comp(string s1,string s2){
+        int len1=s1.length();
+        int len2=s2.length();
+        return len1<len2;
+
+    }
+    bool isvalid(string &s1,string &s2){
+        int count=0;
+        int start=0;
+        for(int i=0;i<s2.length();i++){
+            if(s1[start]==s2[i]){
+                start++;
+            }
+            if(start==s1.length()){
+                return true;
+            }
+        }
+        return false;
+    }
+    int longestStrChain(vector<string>& words) {
+        sort(words.begin(),words.end(),comp);
+        int n=words.size();
+        vector<int>dp(n,1);
+        for(int i=1;i<n;i++){
+            for(int j=0;j<i;j++){
+                // check if length exactly greater than 1 and subsequence present in string
+                if((words[j].length()+1)==words[i].length() and isvalid(words[j],words[i])){
+                    dp[i]=max(dp[i],dp[j]+1);
+                }
+            }
+        }
+        int maxi=0;
+        for(int i=0;i<n;i++){
+            maxi=max(maxi,dp[i]);
+        }
+        return maxi;
+    }
+};
