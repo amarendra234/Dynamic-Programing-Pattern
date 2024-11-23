@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool match(int i,int j,string s,string p,vector<vector<int>>&dp){
+        if(j==p.length()){
+            return i==s.length();
+        }
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+        bool first_char_matched=false;
+        if(i<s.length() and (p[j]==s[i] or p[j]=='.')){
+            first_char_matched=true;
+        }
+        if((j+1)<p.length()){
+            if(p[j+1]=='*'){
+                bool not_take=match(i,j+2,s,p,dp);
+                bool take=first_char_matched && match(i+1,j,s,p,dp);
+                
+                return dp[i][j]=take || not_take;
+            }
+        }
+        return dp[i][j]=first_char_matched && match(i+1,j+1,s,p,dp);
+    }
+    bool isMatch(string s, string p) {
+        vector<vector<int>>dp(s.length()+1,vector<int>(p.length(),-1));
+        return match(0,0,s,p,dp);
+    }
+};
