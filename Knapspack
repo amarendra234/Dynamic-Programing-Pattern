@@ -1,0 +1,24 @@
+#include <bits/stdc++.h> 
+
+int max_profit(vector<int>&weight,vector<int>&value,int n,int W,vector<vector<int>>&dp){
+	if(n==0 or W==0){
+		return 0;
+	}
+	if(dp[n][W]!=-1){
+		return dp[n][W];
+	}
+	// i have two option take or not take
+	int not_take=max_profit(weight,value,n-1, W,dp);
+	// take the item
+	int take=INT_MIN;
+	if(W>=weight[n-1]){
+		take=value[n-1]+max_profit(weight,value,n-1,W-weight[n-1],dp);
+	}
+
+	return dp[n][W]=max(not_take,take);
+}
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) 
+{
+	vector<vector<int>>dp(n+1,vector<int>(maxWeight+1,-1));
+	return max_profit(weight,value,n,maxWeight,dp);
+}
