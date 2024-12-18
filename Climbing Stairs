@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int total_path(int n,vector<int>&dp){
+        if(n==0){
+            return 1;
+        }
+        if(n<0){
+            return 0;
+        }
+        if(dp[n]!=-1){
+            return dp[n];
+        }
+        return dp[n]=total_path(n-1,dp)+total_path(n-2,dp);
+    }
+    int climbStairs(int n) {
+        vector<int>dp(n+1,-1);
+        return total_path(n,dp);
+    }
+};
