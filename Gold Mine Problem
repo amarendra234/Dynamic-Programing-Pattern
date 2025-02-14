@@ -1,0 +1,28 @@
+class Solution {
+  public:
+    int goldMine(vector<vector<int>>&mat,int i,int j,int n,int m,vector<vector<int>>&dp){
+        if(i<0 or i>=n or j<0 or j>=m){
+            return 0;
+        }
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+        int digaonal_up=mat[i][j]+goldMine(mat,i-1,j+1,n,m,dp);
+        int right=mat[i][j]+goldMine(mat,i,j+1,n,m,dp);
+        int diagonal_down=mat[i][j]+goldMine(mat,i+1,j+1,n,m,dp);
+        return dp[i][j]=max(digaonal_up,max(right,diagonal_down));
+    }
+    int maxGold(vector<vector<int>>& mat) {
+        // code here
+        
+        int n=mat.size();
+        int m=mat[0].size();
+        int ans=INT_MIN;
+        vector<vector<int>>dp(n,vector<int>(m,-1));
+        for(int i=0;i<n;i++){
+            
+            ans=max(ans,goldMine(mat,i,0,n,m,dp));
+        }
+        return ans;
+    }
+};
