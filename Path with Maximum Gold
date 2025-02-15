@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int dfs(vector<vector<int>>&grid,int i,int j,int n,int m){
+        if(i<0 or i>=n or j<0 or j>=m or grid[i][j]==0){
+            return 0;
+        }
+        int x[]={-1,1,0,0};
+        int y[]={0,0,-1,1};
+        int localMax=INT_MIN;
+        int curr_val=grid[i][j];
+        grid[i][j]=0;
+        for(int k=0;k<4;k++){
+            int x_axis=x[k]+i;
+            int y_axis=y[k]+j;
+            localMax=max(localMax,curr_val+dfs(grid,x_axis,y_axis,n,m));
+        }
+        grid[i][j]=curr_val;
+        return localMax;
+    }
+    int getMaximumGold(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        int maxGold=INT_MIN;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]!=0){
+                    maxGold=max(maxGold,dfs(grid,i,j,n,m));
+                }
+            }
+        }
+        return maxGold==INT_MIN?0:maxGold;
+    }
+};
